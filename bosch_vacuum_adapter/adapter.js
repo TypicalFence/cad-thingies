@@ -6,14 +6,7 @@ const OTHER_RAD = 31 / 2;
 const CONE_1_LENGTH = 35;
 const CONE_2_LENGTH = 20;
 const CONE_3_LENGTH = 45;
-const THICC = 1.2;
-
-
-// adjust this function to adjust the thickness of the tube
-// making it a function may have been a bit unnecessary 
-function calc_outer_size(x) {
-    return x * THICC;
-}
+const OUTER_SCALE = 1.2;
 
 function main () {
     let cone_1 = cylinder({
@@ -40,7 +33,11 @@ function main () {
         translate([0, 0, CONE_1_LENGTH + CONE_2_LENGTH], cone_3)
     );
 
-    let adapter_outer = scale([calc_outer_size(1), calc_outer_size(1), 1], adapter_inner)
+    let adapter_outer = scale([
+        OUTER_SCALE, 
+        OUTER_SCALE,
+        1
+    ], adapter_inner)
 
     let adapter = difference(adapter_outer, adapter_inner);
     return adapter;
