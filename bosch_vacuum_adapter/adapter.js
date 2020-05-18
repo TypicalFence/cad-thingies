@@ -21,16 +21,10 @@ function main () {
       h: CONE_2_LENGTH,
     });
 
-    let cone_3 = cylinder({
-      r1: MID_RAD_2, 
-      r2: OTHER_RAD, 
-      h: CONE_3_LENGTH,
-    });
 
     let adapter_inner = union(
         cone_1,
-        translate([0, 0, CONE_1_LENGTH], cone_2),
-        translate([0, 0, CONE_1_LENGTH + CONE_2_LENGTH], cone_3)
+        translate([0, 0, CONE_1_LENGTH], cone_2)
     );
 
     let adapter_outer = scale([
@@ -39,6 +33,20 @@ function main () {
         1
     ], adapter_inner)
 
-    let adapter = difference(adapter_outer, adapter_inner);
+
+    let half_adapter = difference(adapter_outer, adapter_inner);
+
+    let cone_3 = cylinder({
+      r1: MID_RAD_2 * OUTER_SCALE, 
+      r2: OTHER_RAD, 
+      h: CONE_3_LENGTH,
+    });
+    
+    let cone_3_inner_scale = 2 - OUTER_SCALE + 0.033;
+    cone_3_inner = scale([cone_3_inner_scale, cone_3_inner_scale, 1], cone_3);
+    cone_3 = difference(cone_3, cone_3_inner);
+
+    let adapter = union(half_adapter, translate([0,0, CONE_1_LENGTH + CONE_2_LENGTH], cone_3))
+    
     return adapter;
 }
