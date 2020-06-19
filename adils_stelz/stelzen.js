@@ -6,6 +6,7 @@ const indet_height = 10;
 const fn = 20;
 const hollow = true;
 const hollow_shit = 10;
+const hollow_foot_print_factor = 0.8;
 
 
 function main() {
@@ -29,7 +30,7 @@ function main() {
             [0, 0, indet_height],
             cylinder({
                 d1: diameter - hollow_shit,
-                d2: diameter + diameter_ground,
+                d2: (diameter + diameter_ground) * hollow_foot_print_factor,
                 h: height - indet_height,
                 fn,
             })
