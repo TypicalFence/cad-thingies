@@ -23,7 +23,7 @@ function panel(width, thicc=5) {
     
     front = front.center([true, false, false])
 
-    const screwHole = cylinder({r: 1.6, h: thicc, fn: 20})
+    const screwHole = cylinder({r: 1.65789, h: thicc, fn: 20})
         .rotateX(-90)
         .center([true, false, true]);
     
@@ -56,8 +56,9 @@ function jack() {
 
 function main() {
     const thicc = 5;
-    frontPanel = panel(4 * hp, thicc);
-    
+    const width = 4 * hp;
+    frontPanel = panel(width, thicc);
+
     const jackAmount = 6;
     let jacks = []
     
@@ -65,8 +66,19 @@ function main() {
         jacks.push(jack().translate([0, 0, i * 17]));
     }
     
-    jacks = union(jacks).center([false, false, true]).translate([0, 0, u3/2]);
+    jacks = union(jacks)
+        .center([false, false, true])
+        .translate([0, 0, u3/2]);
     
     frontPanel = difference(frontPanel, jacks)
-    return frontPanel;
+    
+    // add supports
+    const supportThicc = 3;
+    const supportHeight = 5;
+
+    const support = cube({size: [supportThicc, supportHeight, u3 - 2 * railHeight]})
+        .center([false, false, true])
+        .translate([-width/2, thicc, u3/2]);
+    
+    return union(frontPanel, support, support.mirroredX());
 }
